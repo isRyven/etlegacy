@@ -726,6 +726,12 @@ void SV_SendClientGameState(client_t *client)
 	msg_t         msg;
 	byte          msgBuffer[MAX_MSGLEN];
 
+	if (client->state == CS_ACTIVE)
+	{
+		SV_DropClient(client, va("SV_SendClientGameState: invalid gamestate request for client '%s'", client->name));
+		return;
+	}
+
 	Com_DPrintf("SV_SendClientGameState() for %s\n", client->name);
 	Com_DPrintf("Going from CS_CONNECTED to CS_PRIMED for %s\n", client->name);
 	client->state         = CS_PRIMED;
